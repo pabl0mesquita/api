@@ -35,7 +35,7 @@ class AuthModel extends Model
 
         // Se o level do usuário for menor que level padrão, então dá erro
         if ($user->level < $level) {
-            $this->message = "Desculpe, mas você não tem permissão para logar-se aqui";
+            $this->message = "Desculpe, mas você não tem permissão para realizar essa ação.";
             return null;
         }
 

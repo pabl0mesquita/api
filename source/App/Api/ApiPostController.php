@@ -21,6 +21,15 @@ class ApiPostController extends Api
                             ->withStatus(408);
         }
 
+        /** 
+         * autenticacao com padrão Basic Auth
+         */
+        $authentication = $this->basicAuth();
+        if(!$authentication){
+            return $response->withHeader('Content-Type', 'application/json')
+                            ->withStatus(400);
+        }
+
         $posts = (new PostModel())->getAll()->where("id", ">=", 5)->fetch();
 
         foreach($posts as $post){
@@ -58,7 +67,7 @@ class ApiPostController extends Api
         /** 
          * autenticacao com padrão Basic Auth
          */
-        $authentication = $this->basicAuth();
+        $authentication = $this->basicAuth(5);
         if(!$authentication){
             return $response->withHeader('Content-Type', 'application/json')
                             ->withStatus(400);

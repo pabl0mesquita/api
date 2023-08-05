@@ -1,0 +1,29 @@
+{
+    "name": "slim/fsphp",
+    "description": "Testando aplicação mvc com slim",
+    "minimum-stability": "stable",
+    "authors": [
+        {
+        "name": "Pablo O. Mesquita",
+        "email": "pablo_omesquita@hotmail.com",
+        "role": "Developer"
+        }
+    ],
+    "config": {
+        "vendor-dir": "vendor"
+    },
+    "autoload": {
+        "psr-4": {
+            "Source\\": "source/"
+        },
+        "files":[
+            "source/Boot/Config.php",
+            "source/Boot/Helpers.php"
+        ]
+    },
+    "require": {
+        "slim/slim": "3.*",
+        "league/plates": "^3.5",
+        "slim/psr7": "^1.6"
+    }
+}

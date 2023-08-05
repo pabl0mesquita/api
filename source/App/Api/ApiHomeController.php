@@ -35,12 +35,12 @@ class ApiHomeController extends Api
     public function getUser(Request $request, Response $response, $args): void
     {
         
-        $id = filter_var($args['id'], FILTER_VALIDATE_INT);
-        
+        $validateInt = $this->validateInt($args['id']);
         /**
          * valida parâmetro id de pesquisa
          */
-        if(!$id){
+        var_dump($validateInt);
+        if(!$validateInt){
             $this->call([
                     "request" => "error",
                     "type" => "invalid_param",
@@ -52,7 +52,7 @@ class ApiHomeController extends Api
         }
 
         $user = new UserModel();
-        $user = $user->get()->where("id","=", $id)->fetch();
+        $user = $user->get()->where("id","=", $args['id'])->fetch();
         
         /**
          * verifica se o usuário foi retornado da base

@@ -46,4 +46,11 @@ class Api
         echo json_encode($this->response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         return $this;
     }
+
+    public function validateInt($int)
+    {
+        $pattern = "/^([0-9]+)$/";
+        $result = preg_match($pattern, $int, $matches);
+        return $result;
+    }
 }

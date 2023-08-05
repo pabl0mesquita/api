@@ -181,7 +181,7 @@ abstract class Model
     }
 
     /**
-     * find
+     * get
      * @return object Model
      */
     public function get(): ?Model
@@ -192,6 +192,7 @@ abstract class Model
     }
 
     /**
+     * getAll
      * @return object Model
      */
     public function getAll(): ?Model

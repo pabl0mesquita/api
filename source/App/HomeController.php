@@ -19,7 +19,7 @@ class HomeController extends Controller
         //var_dump(get_class_methods($request), $request->getQueryParams(), $args);
 
         $user = new UserModel();
-        $users = $user->getAll()->fetch();
+        $users = $user->get()->where("id","=", 1)->fetch();
 
         var_dump($users);
 

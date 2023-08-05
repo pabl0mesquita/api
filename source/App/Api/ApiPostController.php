@@ -12,7 +12,15 @@ class ApiPostController extends Api
 
     public function getPosts(Request $request, Response $response, $args)
     {
-        //var_dump(get_class_methods($request), $request->getQueryParams(), $args);
+        /**
+        * limita o número de requisições
+        */
+        $request = $this->requestLimit('User',3, 10);
+        if(!$request){
+            return $response->withHeader('Content-Type', 'application/json')
+                            ->withStatus(408);
+        }
+
         $posts = (new PostModel())->getAll()->where("id", ">=", 5)->fetch();
 
         foreach($posts as $post){
@@ -35,11 +43,18 @@ class ApiPostController extends Api
 
     /**
      * getUser
-     * @return void
      */
-    public function getPost(Request $request, Response $response, $args): void
+    public function getPost(Request $request, Response $response, $args)
     {
-        
+        /**
+        * limita o número de requisições
+        */
+        $request = $this->requestLimit('User',3, 10);
+        if(!$request){
+            return $response->withHeader('Content-Type', 'application/json')
+                            ->withStatus(408);
+        }
+
         $validateInt = $this->validateInt($args['id']);
         /**
          * valida parâmetro id de pesquisa

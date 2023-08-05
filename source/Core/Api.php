@@ -135,7 +135,7 @@ class Api
                     "request" => "error",
                     "type" => "request_limit",
                     "message" => "Você exedeu o limite de requisições para essa ação",
-                    "status" => 400
+                    "status" => 408
                 ]
             )->back();
             

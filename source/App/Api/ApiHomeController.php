@@ -16,6 +16,14 @@ class ApiHomeController extends Api
 
     public function getUsers(Request $request, Response $response, $args)
     {
+        /**
+        * limita o número de requisições
+        */
+        $request = $this->requestLimit('User',3, 10);
+        if(!$request){
+            return $response->withHeader('Content-Type', 'application/json')
+                            ->withStatus(408);
+        }
         //var_dump(get_class_methods($request), $request->getQueryParams(), $args);
 
         $users = (new UserModel())->getAll()->fetch();

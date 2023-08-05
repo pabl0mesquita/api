@@ -12,10 +12,12 @@ $app->get("/", "Source\App\Api\ApiHomeController:index");
 //users
 $app->get("/user", "Source\App\Api\ApiHomeController:getUsers");
 $app->get("/user/{id}", "Source\App\Api\ApiHomeController:getUser");
+$app->post("/user", "Source\App\Api\ApiHomeController:getUserCreate");
+$app->put("/user", "Source\App\Api\ApiHomeController:getUserUpdate");
+$app->delete("/user", "Source\App\Api\ApiHomeController:getUserDelete");
 
 //blog
 $app->get("/post", "Source\App\Api\ApiPostController:getPosts");
-
 
 $app->run();
 

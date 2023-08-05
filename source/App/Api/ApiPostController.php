@@ -55,11 +55,19 @@ class ApiPostController extends Api
                             ->withStatus(408);
         }
 
+        /** 
+         * autenticacao com padrão Basic Auth
+         */
+        $authentication = $this->basicAuth();
+        if(!$authentication){
+            return $response->withHeader('Content-Type', 'application/json')
+                            ->withStatus(400);
+        }
+
         $validateInt = $this->validateInt($args['id']);
         /**
          * valida parâmetro id de pesquisa
          */
-        var_dump($validateInt);
         if(!$validateInt){
             $this->call([
                     "request" => "error",
@@ -68,7 +76,8 @@ class ApiPostController extends Api
                     "status" => 400
                     ]);
             $this->back();
-            return;
+            return $response->withHeader('Content-Type', 'application/json')
+                            ->withStatus(400);
         }
 
         $user = new PostModel();
@@ -98,6 +107,8 @@ class ApiPostController extends Api
                 ]
         );
         $this->back();
-        return;
+        return $response->withHeader('Content-Type', 'application/json')
+                            ->withStatus(200);
+
     }
 }

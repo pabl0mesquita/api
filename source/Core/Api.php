@@ -3,16 +3,12 @@
 namespace Source\Core;
 
 use Psr\Http\Message\ResponseInterface as Response;
-
+use Source\Models\AuthModel;
 class Api
 {
     /** @var array|null */
     protected $response;
 
-    public function __construct()
-    {
-        //$response = (new Response)->withHeader('Content-type', 'application/json');
-    }
     /**
      * @param int $code
      * @param string|null $type
@@ -155,4 +151,36 @@ class Api
         return true;
     }
 
+    public function basicAuth(int $level = 1): bool
+    {    
+        if(!isset($_SERVER["PHP_AUTH_USER"]) || empty($_SERVER["PHP_AUTH_USER"] || !isset($_SERVER["PHP_AUTH_PW"]) || empty($_SERVER["PHP_AUTH_PW"]))){
+
+            $this->call([
+                "request" => "error",
+                "type" => "empty_data",
+                "message" => "É necessário autenticação para esta ação. Por favor, envie suas credenciais.",
+                "status" => 400]
+            )->back();
+            return false;
+        }
+
+        $auth = new AuthModel();
+        $user = $auth->verify($_SERVER["PHP_AUTH_USER"], $_SERVER["PHP_AUTH_PW"], $level);
+        
+        if(!$user){
+            $this->call([
+                "request" => "error",
+                "type" => "invalid_auth",
+                "message" => $auth->message(),
+                "status" => 401
+            ]
+
+            )->back();
+            return false;
+        }
+
+        return true;
+
+
+    }
 }

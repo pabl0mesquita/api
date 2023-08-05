@@ -18,6 +18,7 @@ $app->delete("/user", "Source\App\Api\ApiHomeController:getUserDelete");
 
 //blog
 $app->get("/post", "Source\App\Api\ApiPostController:getPosts");
+$app->get("/post/{id}", "Source\App\Api\ApiPostController:getPost");
 
 $app->run();
 

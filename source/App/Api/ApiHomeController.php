@@ -7,25 +7,31 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Source\Core\Api;
 use Source\Models\UserModel;
 
+/**
+ * Class
+ * ApiHomeController
+ */
 class ApiHomeController extends Api
 {
 
-    public function index(Request $request, Response $response, $args): void
+    public function getUsers(Request $request, Response $response, $args)
     {
         //var_dump(get_class_methods($request), $request->getQueryParams(), $args);
 
-        $user = new UserModel();
-        $users = $user->get()->where("id","=", 2)->fetch();
+        $users = (new UserModel())->getAll()->fetch();
 
-        //echo json_encode($users);
+        foreach($users as $user){
+            $json[] = $user->datas();
+        }
 
-        echo json_encode([
-            "errors" => [
-                "type " => "endpoint_not_found",
-                "message" => "Não foi possível processar a requisição"
-            ]
-        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-        return;
+        $this->call([
+            "request" => "success",
+            "status" => 200,
+            "datas" => $json
+            ]);
+        $this->back();
+        return $response->withHeader('Content-Type', 'application/json')
+                        ->withStatus(200);
     }
 
     /**

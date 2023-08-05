@@ -2,7 +2,7 @@
 namespace Source\Core;
 
 /**
- * Class Connect [ Sigleton Pattern ]
+ * Connect [ Sigleton Pattern ]
  */
 class Connect
 {

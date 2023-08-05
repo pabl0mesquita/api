@@ -10,6 +10,7 @@ $app = new App();
 $app->get("/", "Source\App\Api\ApiHomeController:index");
 
 //users
+$app->get("/user", "Source\App\Api\ApiHomeController:getUsers");
 $app->get("/user/{id}", "Source\App\Api\ApiHomeController:getUser");
 
 //blog

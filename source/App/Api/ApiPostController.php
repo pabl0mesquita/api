@@ -13,8 +13,7 @@ class ApiPostController extends Api
     public function getPosts(Request $request, Response $response, $args)
     {
         //var_dump(get_class_methods($request), $request->getQueryParams(), $args);
-        $post = new PostModel();
-        $posts = $post->getAll()->where("id", ">=", 5)->fetch();
+        $posts = (new PostModel())->getAll()->where("id", ">=", 5)->fetch();
 
         foreach($posts as $post){
             $json[] = $post->datas();

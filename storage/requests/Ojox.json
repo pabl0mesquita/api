@@ -2,7 +2,7 @@
     "User": {
         "limit": 3,
         "ip": "::1",
-        "requests": 3,
-        "time": 1691261742
+        "requests": 1,
+        "time": 1691262084
     }
 }

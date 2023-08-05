@@ -8,7 +8,12 @@ use Slim\App;
 
 $app = new App();
 $app->get("/", "Source\App\Api\ApiHomeController:index");
+
+//users
 $app->get("/user/{id}", "Source\App\Api\ApiHomeController:getUser");
+
+//blog
+$app->get("/post", "Source\App\Api\ApiPostController:getPosts");
 
 
 $app->run();

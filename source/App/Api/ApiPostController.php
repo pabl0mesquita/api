@@ -5,47 +5,47 @@ namespace Source\App\Api;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Source\Core\Api;
-use Source\Models\UserModel;
+use Source\Models\PostModel;
 
-class ApiHomeController extends Api
+class ApiPostController extends Api
 {
 
-    public function index(Request $request, Response $response, $args): void
+    public function getPosts(Request $request, Response $response, $args)
     {
         //var_dump(get_class_methods($request), $request->getQueryParams(), $args);
+        $post = new PostModel();
+        $posts = $post->getAll()->where("id", ">=", 5)->fetch();
 
-        $user = new UserModel();
-        $users = $user->get()->where("id","=", 2)->fetch();
-
-        //echo json_encode($users);
-
-        echo json_encode([
-            "errors" => [
-                "type " => "endpoint_not_found",
-                "message" => "Não foi possível processar a requisição"
+        foreach($posts as $post){
+            $json[] = $post->datas();
+        }
+        
+        /**
+        * em caso de sucesso, retorna dados do usuário
+        */
+        $this->call([
+            "request" => "success",
+            "status" => 200,
+            "data" => $json
             ]
-        ], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-        return;
+        );
+        $this->back();
+        return $response->withHeader('Content-Type', 'application/json')
+                        ->withStatus(200);
     }
 
     /**
      * getUser
+     * @return void
      */
-    public function getUser(Request $request, Response $response, $args)
+    public function getPost(Request $request, Response $response, $args): void
     {
-        /**
-         * limita o número de requisições
-         */
-        $request = $this->requestLimit('User',3, 10);
-        if(!$request){
-            return $response->withHeader('Content-Type', 'application/json')
-                            ->withStatus(408);
-        }
-
+        
         $validateInt = $this->validateInt($args['id']);
         /**
          * valida parâmetro id de pesquisa
          */
+        var_dump($validateInt);
         if(!$validateInt){
             $this->call([
                     "request" => "error",
@@ -54,11 +54,10 @@ class ApiHomeController extends Api
                     "status" => 400
                     ]);
             $this->back();
-            return $response->withHeader('Content-Type', 'application/json')
-                            ->withStatus(400);
+            return;
         }
 
-        $user = new UserModel();
+        $user = new PostModel();
         $user = $user->get()->where("id","=", $args['id'])->fetch();
         
         /**
@@ -69,11 +68,10 @@ class ApiHomeController extends Api
                     "request" => "error",
                     "type" => "invalid_id",
                     "message" => "Não encontramos usuário com este id em nossa base",
-                    "status" => 400
+                    "status" => 401
                     ]);
             $this->back();
-            return $response->withHeader('Content-Type', 'application/json')
-                            ->withStatus(400);
+            return;
         }
 
         /**
@@ -86,7 +84,6 @@ class ApiHomeController extends Api
                 ]
         );
         $this->back();
-        return $response->withHeader('Content-Type', 'application/json')
-                        ->withStatus(200);
+        return;
     }
 }

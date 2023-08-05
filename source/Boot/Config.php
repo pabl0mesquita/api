@@ -15,3 +15,6 @@ define("CONF_DB_PASSWD", "");
 define("CONF_VIEW_PATH", "/themes");
 define("CONF_VIEW_EXT", "php");
 define("CONF_VIEW_THEME_WEB", "Web");
+
+
+define("CONF_UPLOAD_DIR", "storage");

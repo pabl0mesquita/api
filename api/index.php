@@ -8,8 +8,6 @@ use Slim\App;
 
 $app = new App();
 
-
-
 ### USERS ###
 //user
 $app->get("/user/{id}", "Source\App\Api\ApiUserController:getUser");

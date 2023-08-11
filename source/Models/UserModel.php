@@ -10,6 +10,11 @@ class UserModel extends Model
         parent::__construct("users", [""],[""]);
     }
 
+    public function bootstrap()
+    {
+        
+    }
+
     public function findByEmail(string $email)
     {
        return $this->get()->where("email", "=", $email)->fetch();

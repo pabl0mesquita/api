@@ -137,10 +137,48 @@ class ApiUserController extends Api
      * @var Response $response
      * @var mixed $args
      */
-    public function postUserCreate($request, $response, $args)
+    public function postUsersCreate($request, $response, $args)
     {
         $getBodyJson = json_decode($request->getBody());
         var_dump($getBodyJson);
         
+    }
+
+    /**
+     * getUsersCreate
+     * @var Request $request
+     * @var Response $response
+     * @var mixed $args
+     */
+    public function postUserCreate($request, $response, $args)
+    {
+        //var_dump(get_class_methods($request), $request->getContentType());
+        if($request->getContentType() === "application/x-www-form-urlencoded"){
+
+            $dataFilter = filter_var_array($request->getParams(), FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+            $userModel = new UserModel();
+
+            $userModel->first_name = $dataFilter['first_name'] ?? null;
+            $userModel->last_name = $dataFilter['last_name'] ?? null;
+            $userModel->email = $dataFilter['email'] ?? null;
+            $userModel->password = $dataFilter['password'] ?? null;
+            $userModel->genre = $dataFilter['genre'] ?? null;
+            $userModel->datebirth = $dataFilter['datebirth'] ?? null;
+
+            var_dump($userModel->datas());
+            return;
+        }
+
+        if(str_contains($request->getContentType(), "multipart/form-data")){
+            var_dump('multi-form-data');
+            return;
+        }
+
+        if($request->getContentType() === "application/json"){
+            $datas = json_decode($request->getBody());
+            var_dump($datas);
+            return;
+        }
     }
 }

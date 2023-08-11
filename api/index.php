@@ -8,12 +8,15 @@ use Slim\App;
 
 $app = new App();
 
-//users
-$app->get("/user", "Source\App\Api\ApiUserController:getUsers");
+### USERS ###
+//user
 $app->get("/user/{id}", "Source\App\Api\ApiUserController:getUser");
 $app->post("/user", "Source\App\Api\ApiUserController:postUserCreate");
 $app->put("/user", "Source\App\Api\ApiUserController:getUserUpdate");
 $app->delete("/user", "Source\App\Api\ApiUserController:getUserDelete");
+//users
+$app->post("/users", "Source\App\Api\ApiUserController:postUsersCreate");
+$app->get("/users", "Source\App\Api\ApiUserController:getUsers");
 
 //blog
 $app->get("/post", "Source\App\Api\ApiPostController:getPosts");

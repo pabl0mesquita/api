@@ -4,11 +4,19 @@ namespace Source\Core;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Source\Models\AuthModel;
+use Source\Models\ApiModel;
 class Api
 {
     /** @var array|null */
     protected $response;
 
+    /** @headers */
+    protected $headers;
+
+    public function __construct()
+    {
+        $this->headers = getallheaders();
+    }
     /**
      * @param int $code
      * @param string|null $type
@@ -151,6 +159,11 @@ class Api
         return true;
     }
 
+    /**
+     * basicAuth
+     * @var int $level
+     * @return bool
+     */
     public function basicAuth(int $level = 1): bool
     {    
         if(!isset($_SERVER["PHP_AUTH_USER"]) || empty($_SERVER["PHP_AUTH_USER"] || !isset($_SERVER["PHP_AUTH_PW"]) || empty($_SERVER["PHP_AUTH_PW"]))){
@@ -181,6 +194,50 @@ class Api
 
         return true;
 
+    }
+
+    public function apiKey(string $key , int $level = 1): bool
+    {
+        if(empty($key)){
+            $this->call([
+                "request" => "error",
+                "type" => "empty_data",
+                "message" => "É necessário autenticação para esta ação. Por favor, envie a chave da api.",
+                "status" => 400]
+            )->back();
+            return false;
+        }
+
+        $api = new ApiModel();
+        $keyAuthentication = $api->columns("users.level")
+                                 ->get()
+                                 ->join("users")
+                                 ->on("app_api.user_id", "=", "users.id")
+                                 ->where("`key`", "=", $key)
+                                 ->fetch();
+
+        if(empty($keyAuthentication)){
+            $this->call([
+                "request" => "error",
+                "type" => "invalid_key_api",
+                "message" => "Não foi possível realizar a autenticação: chave da api inválida.",
+                "status" => 401
+            ]);
+            return false;
+        }
+
+        if($keyAuthentication->level < $level){
+            $this->call([
+                "request" => "error",
+                "type" => "invalid_permission",
+                "message" => "Você não tem permissão para executar essa ação.",
+                "status" => 401
+            ]);
+            return false;
+        }
+
+
+        return true;
 
     }
 }

@@ -10,10 +10,8 @@ $app = new App();
 
 //users
 $app->get("/user", "Source\App\Api\ApiUserController:getUsers");
-
 $app->get("/user/{id}", "Source\App\Api\ApiUserController:getUser");
-
-$app->post("/user", "Source\App\Api\ApiUserController:getUserCreate");
+$app->post("/user", "Source\App\Api\ApiUserController:postUserCreate");
 $app->put("/user", "Source\App\Api\ApiUserController:getUserUpdate");
 $app->delete("/user", "Source\App\Api\ApiUserController:getUserDelete");
 

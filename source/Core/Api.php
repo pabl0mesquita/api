@@ -196,6 +196,12 @@ class Api
 
     }
 
+    /**
+     * apiKey
+     * @var string $key
+     * @var int $level
+     * @return bool
+     */
     public function apiKey(string $key , int $level = 1): bool
     {
         if(empty($key)){
@@ -235,7 +241,6 @@ class Api
             ]);
             return false;
         }
-
 
         return true;
 

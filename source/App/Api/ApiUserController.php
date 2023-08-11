@@ -10,7 +10,12 @@ use Source\Models\UserModel;
 class ApiUserController extends Api
 {
 
-    public function getUsers(Request $request, Response $response, $args)
+    /**
+     * getUsers
+     * @var Request $request
+     * @var Response $response
+     */
+    public function getUsers($request, $response, $args)
     {
         /**
         * limita o número de requisições
@@ -22,15 +27,16 @@ class ApiUserController extends Api
         }
 
         /** 
-         * autenticacao com padrão Basic Auth
-         */
-        $authentication = $this->basicAuth();
+        * autenticacao com padrão ApiKey
+        */
+        $authentication = $this->apiKey($this->headers['api_key'] ?? null, 3);
         if(!$authentication){
+            $this->back();
             return $response->withHeader('Content-Type', 'application/json')
                             ->withStatus(400);
         }
 
-        $posts = (new PostModel())->getAll()->where("id", ">=", 5)->fetch();
+        $posts = (new UserModel())->getAll()->fetch();
 
         foreach($posts as $post){
             $json[] = $post->datas();
@@ -52,8 +58,10 @@ class ApiUserController extends Api
 
     /**
      * getUser
+     * @var Request $request
+     * @var Response $response
      */
-    public function getUser(Request $request, Response $response, $args)
+    public function getUser($request, $response, $args)
     {
        /**
         * limita o número de requisições
@@ -121,5 +129,18 @@ class ApiUserController extends Api
         return $response->withHeader('Content-Type', 'application/json')
                             ->withStatus(200);
 
+    }
+
+    /**
+     * getUserCreate
+     * @var Request $request
+     * @var Response $response
+     * @var mixed $args
+     */
+    public function postUserCreate($request, $response, $args)
+    {
+        $getBodyJson = json_decode($request->getBody());
+        var_dump($getBodyJson);
+        
     }
 }

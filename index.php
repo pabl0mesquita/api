@@ -1,5 +1,5 @@
 <?php
-require __DIR__."/../vendor/autoload.php";
+require __DIR__."/vendor/autoload.php";
 
 use Source\App\HomeController;
 use Psr\Http\Message\ResponseInterface as Response;
